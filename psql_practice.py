@@ -40,3 +40,16 @@ def retrieveData(query):
     result = sql.read_sql(query,connection)
     connection.close()
     return result
+
+
+# %% [markdown]
+# __Situation 01:__ 
+#
+# We want to send out a promotinal email to our existing customers.
+
+# %%
+SELECT_CUSTOMER_DATA="SELECT first_name, last_name, email FROM customer;"
+
+# %%
+query = retrieveData(SELECT_CUSTOMER_DATA)
+query
