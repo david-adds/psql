@@ -310,10 +310,10 @@ query
 # %%
 SPENT_100_N_ABOVE='''
 SELECT COUNT(*) FROM film
-WHERE title like 'J%'
+WHERE title like 'J%%'
 '''
-#query = retrieveData(SPENT_100_N_ABOVE,'dvdrental')
-#query
+query = retrieveData(SPENT_100_N_ABOVE,'dvdrental')
+query
 
 # %% [markdown]
 # __3. What customer has the highest customer ID number whose name starts with an 'E' and has an address ID lower than 500?__
@@ -466,10 +466,10 @@ query
 # %%
 QUERY='''
 SELECT * FROM cd.facilities
-WHERE name LIKE '%Tennis%'
+WHERE name LIKE '%%Tennis%%'
 '''
-# query = retrieveData(QUERY,'exercises')
-# query
+query = retrieveData(QUERY,'exercises')
+query
 
 # %% [markdown]
 # __6. How can you retrieve the details of facilities with ID 1 and 5?\
@@ -548,6 +548,48 @@ ON f.facid = b.facid
 WHERE EXTRACT(MONTH FROM starttime) in (9)
 GROUP BY f.facid
 ORDER BY SUM(b.slots)
+'''
+query = retrieveData(QUERY,'exercises')
+query
+
+# %% [markdown]
+# __12. Produce a list of facilities with more than 1000 slots booked.\
+# Produce an output table consisting of facility id and total slots, sorted by facility id.__
+
+# %%
+QUERY='''
+SELECT facid,SUM(slots) FROM cd.bookings
+GROUP BY facid
+HAVING SUM(slots) > 1000
+ORDER BY facid
+'''
+query = retrieveData(QUERY,'exercises')
+query
+
+# %% [markdown]
+# __13. How can you produce a list of the start times for bookings for tennis courts, for the date '2012-09-21'?\
+# Return a list of start time and facility name pairings, ordered by the time.__
+
+# %%
+QUERY='''
+SELECT B.starttime, F.name FROM cd.bookings AS B
+LEFT JOIN cd.facilities AS F
+on B.facid=F.facid
+WHERE CAST(B.starttime AS DATE) = '2012-09-21' 
+AND name LIKE 'Tennis Court _'
+'''
+query = retrieveData(QUERY,'exercises')
+query
+
+# %% [markdown]
+# __14. How can you produce a list of the start times for bookings by members named 'David Farrell'?__
+
+# %%
+QUERY='''
+SELECT b.starttime, (m.firstname||' '||m.surname) AS name FROM cd.bookings b
+LEFT JOIN cd.members as m
+ON b.memid=m.memid
+WHERE m.firstname = 'David' AND m.surname = 'Farrell'
 '''
 query = retrieveData(QUERY,'exercises')
 query
